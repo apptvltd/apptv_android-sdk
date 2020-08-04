@@ -1,0 +1,35 @@
+apply plugin: 'maven'
+
+group 'com.apptv'
+
+version = '4.1.2'
+
+ext {
+    // location of external files relative to this build.gradle file
+    extFiles = [
+        main: 'appTV-SDK-4.1.2.aar',
+    ]
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        pom.project {
+            name 'AppTv Ad SDK'
+            organization {
+                name 'AppTv.com'
+            }
+        }
+        // fake repository used for testing
+        repository( id: 'fakeRepo', url: 'file:repository/' )
+    }
+}
+
+artifacts {
+    archives file: file( extFiles.main ), type: 'aar'
+}
+
+task cleanTmp << {
+    delete 'tmp'
+}
+
+clean.dependsOn cleanTmp
